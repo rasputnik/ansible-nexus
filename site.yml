@@ -1,0 +1,7 @@
+---
+
+- hosts: nexuses
+  become: yes
+  roles:
+    - openjdk8
+    - nexus3
