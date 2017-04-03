@@ -1,14 +1,5 @@
 
-- name: create {{ nexus3_group }}
-  group:
-    name: "{{ nexus3_group }}"
-
-- name: create {{ nexus3_user }} account
-  user:
-    name: "{{ nexus3_user }}"
-    group: "{{ nexus3_group }}"
-    comment: Sonatype Nexus
-    createhome: yes
+- include: account.yml
 
 - name: download {{ nexus3_release }} tarball
   get_url:
@@ -30,17 +21,6 @@
     owner: root
     group: root
   notify: bounce nexus3
-
-- name: run as {{ nexus3_user }} from {{ nexus3_home }}
-  template:
-    src: ".{{ item }}.j2"
-    dest: "{{ item }}"
-    owner: root
-    group: root
-    mode: 0444
-  with_items:
-    - "{{ nexus3_home }}/bin/nexus.rc"
-    - /etc/profile.d/nexus3.sh
 
 - name: writable {{ nexus3_work_dir }} directory
   file:

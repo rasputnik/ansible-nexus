@@ -1,0 +1,20 @@
+
+- name: create {{ nexus3_group }}
+  group:
+    name: "{{ nexus3_group }}"
+
+- name: create {{ nexus3_user }} account
+  user:
+    name: "{{ nexus3_user }}"
+    group: "{{ nexus3_group }}"
+    comment: Sonatype Nexus
+    createhome: yes
+
+- name: raise maxfiles for {{ nexus3_user }} account
+  template:
+    src: etc/security/limits.d/nexus-maxfiles.conf.j2
+    dest: /etc/security/limits.d/nexus-maxfiles.conf
+    mode: 0444
+    owner: root
+    group: root
+  notify: bounce nexus3
