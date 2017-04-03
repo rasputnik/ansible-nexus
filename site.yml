@@ -2,6 +2,8 @@
 
 - hosts: nexuses
   become: yes
+# NB: override this in certain tasks
+  become_user: root
   roles:
     - openjdk8
     - nexus3
