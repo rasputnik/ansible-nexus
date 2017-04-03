@@ -7,7 +7,7 @@
 # and just read vagrant/hosts directly.
 
 hosts = [
-  {:name => "nexus1",  :ip => "10.144.0.4", :ram => 2048}
+  {:name => "nexus3",  :ip => "10.144.0.4", :ram => 2560}
 ]
 
 Vagrant.configure("2") do |config|
