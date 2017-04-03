@@ -1,0 +1,5 @@
+
+- name: bounce nexus3
+  service:
+    name: nexus3
+    state: restarted

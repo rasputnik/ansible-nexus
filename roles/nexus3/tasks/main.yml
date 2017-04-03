@@ -22,15 +22,14 @@
     creates: "{{ nexus3_home }}/NOTICE.txt"
     remote_src: yes
 
-- name: use initscript from tarball
-  copy:
-    src: "{{ nexus3_home }}/bin/nexus"
-    dest: /etc/init.d/nexus
+- name: use upstart script
+  template:
+    src: etc/init/nexus3.conf.j2
+    dest: /etc/init/nexus3.conf
     mode: 0555
-    remote_src: yes
     owner: root
     group: root
-
+  notify: bounce nexus3
 
 - name: run as {{ nexus3_user }} from {{ nexus3_home }}
   template:
@@ -45,7 +44,13 @@
 
 - name: writable {{ nexus3_work_dir }} directory
   file:
+    path: "{{ nexus3_work_dir }}"
     state: directory
     owner: "{{ nexus3_user }}"
     group: "{{ nexus3_group }}"
-    path: "{{ nexus3_work_dir }}"
+
+- name: nexus3 service
+  service:
+    name: nexus3
+    state: started
+    enabled: yes
