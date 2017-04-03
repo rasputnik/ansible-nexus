@@ -7,7 +7,7 @@ stop on runlevel [06]
 script
 sudo -u {{ nexus3_user }} -i <<EOF
   export JAVA_HOME={{ nexus3_java_home }}
-  cd {{ nexus3_home }}
+  cd {{ nexus3_dist_dir }}
   exec ./bin/nexus run
 EOF
 end script

@@ -2,18 +2,20 @@
 - include: account.yml
 
 - name: download {{ nexus3_release }} tarball
+  become_user: "{{ nexus3_user }}"
   get_url:
     url: "{{ nexus3_tar_url }}"
     dest: "{{ nexus3_tar_cache }}"
 
 - name: extract nexus3 tar
+  become_user: "{{ nexus3_user }}"
   unarchive:
     src: "{{ nexus3_tar_cache }}"
-    dest: "{{ nexus3_home_parent }}"
-    creates: "{{ nexus3_home }}/NOTICE.txt"
+    dest: "{{ nexus3_home }}"
+    creates: "{{ nexus3_dist_dir }}/NOTICE.txt"
     remote_src: yes
 
-- name: use upstart script
+- name: upstart script
   template:
     src: etc/init/nexus3.conf.j2
     dest: /etc/init/nexus3.conf
@@ -21,13 +23,6 @@
     owner: root
     group: root
   notify: bounce nexus3
-
-- name: writable {{ nexus3_work_dir }} directory
-  file:
-    path: "{{ nexus3_work_dir }}"
-    state: directory
-    owner: "{{ nexus3_user }}"
-    group: "{{ nexus3_group }}"
 
 - name: nexus3 service
   service:
